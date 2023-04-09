@@ -22,5 +22,10 @@ final routerConfig = GoRouter(
       name: Routes.home,
       builder: (context, state) => const HomePage(),
     ),
+    GoRoute(
+      path: Routes.game,
+      name: Routes.game,
+      builder: (context, state) => const GamePage(),
+    ),
   ],
 );
