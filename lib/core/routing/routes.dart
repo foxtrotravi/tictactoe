@@ -1,4 +1,5 @@
 class Routes {
-  static const splashRoute = '/';
-  static const onboardingRoute = '/onboardingRoute';
+  static const splash = '/';
+  static const onboarding = '/onboarding';
+  static const home = '/home';
 }

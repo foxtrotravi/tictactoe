@@ -18,9 +18,9 @@ class SplashPage extends ConsumerWidget {
         final sharedPrefs = current.value;
         if (sharedPrefs == null) return;
         if (sharedPrefs.getBool(kIsNewUser) ?? true) {
-          context.goNamed(Routes.onboardingRoute);
+          context.goNamed(Routes.onboarding);
         } else {
-          // Existing user
+          context.goNamed(Routes.home);
         }
       },
     );
