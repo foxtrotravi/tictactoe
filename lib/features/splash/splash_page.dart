@@ -1,38 +1,35 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tictactoe/core/constants/constants.dart';
+import 'package:tictactoe/core/providers/index.dart';
+import 'package:tictactoe/core/routing/routes.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends ConsumerWidget {
   const SplashPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(
+      sharedPreferencesProvider,
+      (prev, current) async {
+        final sharedPrefs = current.value;
+        if (sharedPrefs == null) return;
+        if (sharedPrefs.getBool(kIsNewUser) ?? true) {
+          context.goNamed(Routes.onboardingRoute);
+        } else {
+          // Existing user
+        }
+      },
+    );
 
-class _SplashPageState extends State<SplashPage> {
-  @override
-  void initState() {
-    handleNavigation();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
         child: const Icon(Icons.home),
       ),
     );
-  }
-
-  Future<void> handleNavigation() async {
-    await Future.delayed(
-      const Duration(seconds: 1),
-    );
-
-    // Check for already logged in user
-    // Navigate to onboarding page if user is new
-    // Navigate to home page if user already exists
   }
 }

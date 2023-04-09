@@ -12,5 +12,10 @@ final routerConfig = GoRouter(
       name: Routes.splashRoute,
       builder: (context, state) => const SplashPage(),
     ),
+    GoRoute(
+      path: Routes.onboardingRoute,
+      name: Routes.onboardingRoute,
+      builder: (context, state) => const OnboardingPage(),
+    ),
   ],
 );
