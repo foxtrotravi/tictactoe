@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tictactoe/core/utils/utils.dart';
 
 @immutable
 class GameState {
@@ -64,10 +65,19 @@ class GameStateNotifier extends StateNotifier<GameState> {
 
   void set(int x, int y, int value) {
     state = state.updateGameState(x, y, value);
+    toggle();
   }
 
   void toggle() {
     state = state.copyWith(isMyTurn: !state.isMyTurn);
+  }
+
+  void aiMove() {
+    final bestMove = nextMove(state.gameState, 1);
+    state = state.copyWith(
+      gameState: bestMove,
+      isMyTurn: true,
+    );
   }
 }
 

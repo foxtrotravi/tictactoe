@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tictactoe/core/providers/index.dart';
 import 'package:tictactoe/core/themes/theme.dart';
+import 'package:tictactoe/core/utils/utils.dart';
 
 class Board extends StatelessWidget {
   const Board({
@@ -93,11 +94,19 @@ class Cell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(gameProvider.select((value) => value.gameState[x][y]));
     return GestureDetector(
-      onTap: () {
-        if (ref.read(gameProvider).gameState[x][y] != -1) return;
-        final isMyTurn = ref.read(gameProvider).isMyTurn;
-        ref.read(gameProvider.notifier).set(x, y, isMyTurn ? 0 : 1);
-        ref.read(gameProvider.notifier).toggle();
+      onTap: () async {
+        var game = ref.read(gameProvider);
+        if (game.gameState[x][y] != -1 || isGameOver(game.gameState)) return;
+        final isMyTurn = game.isMyTurn;
+        final gameNotifierProvider = ref.read(gameProvider.notifier);
+        gameNotifierProvider.set(x, y, isMyTurn ? 0 : 1);
+        await Future.delayed(
+          const Duration(milliseconds: 250),
+        );
+        game = ref.read(gameProvider);
+        if (!isGameOver(game.gameState)) {
+          gameNotifierProvider.aiMove();
+        }
       },
       child: Container(
         decoration: BoxDecoration(

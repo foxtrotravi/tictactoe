@@ -42,3 +42,30 @@ bool isDiagonalWin(List<List<int>> list) {
 
   return diagonalWin;
 }
+
+List<List<int>> nextMove(List<List<int>> currentState, int xo) {
+  if (isGameOver(currentState)) return currentState;
+
+  int bestScore = -1 << 10;
+  var bestMove = <int>[];
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      if (currentState[i][j] == -1) {
+        currentState[i][j] = xo;
+        int currentScore = minimax(currentState);
+        if (currentScore > bestScore) {
+          bestScore = currentScore;
+          bestMove = [i, j];
+        }
+        currentState[i][j] = -1;
+      }
+    }
+  }
+  currentState[bestMove[0]][bestMove[1]] = xo;
+
+  return currentState;
+}
+
+int minimax(List<List<int>> list) {
+  return 1;
+}
