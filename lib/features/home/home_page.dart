@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  context.pushNamed(Routes.game);
+                  context.pushNamed(Routes.aiGame);
                 },
                 child: const Text('vs AI'),
               ),
