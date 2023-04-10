@@ -27,5 +27,10 @@ final routerConfig = GoRouter(
       name: Routes.game,
       builder: (context, state) => const GamePage(),
     ),
+    GoRoute(
+      path: Routes.aiGame,
+      name: Routes.aiGame,
+      builder: (context, state) => const AIGamePage(),
+    ),
   ],
 );
