@@ -7,5 +7,10 @@ class AppTheme {
   static final theme = ThemeData(
     primaryColor: primary,
     scaffoldBackgroundColor: scaffoldBackgroundColor,
+    textTheme: const TextTheme(
+      bodyMedium: TextStyle(
+        color: Colors.white,
+      ),
+    ),
   );
 }
