@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tictactoe/core/providers/index.dart';
+import 'package:tictactoe/core/utils/utils.dart';
 import 'package:tictactoe/features/game/widgets/board.dart';
 
 class GamePage extends ConsumerWidget {
@@ -8,18 +9,33 @@ class GamePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pvpGame = ref.watch(gameProvider);
+    ref.listen(
+      gameProvider.select((value) => value.gameState),
+      (previous, next) {
+        if (isGameOver(next)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Game Over'),
+            ),
+          );
+        }
+      },
+    );
 
     return Scaffold(
       body: SafeArea(
         child: Container(
           alignment: Alignment.center,
-          child: Board(
-            gameState: pvpGame.gameState,
-            gradientColors: const [
-              Colors.indigo,
-              Colors.blue,
-            ],
+          child: Consumer(
+            builder: (context, ref, child) {
+              return Board(
+                gameState: ref.watch(gameProvider).gameState,
+                gradientColors: const [
+                  Colors.indigo,
+                  Colors.blue,
+                ],
+              );
+            },
           ),
         ),
       ),

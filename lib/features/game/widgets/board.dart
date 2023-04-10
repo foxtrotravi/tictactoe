@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tictactoe/core/providers/index.dart';
 import 'package:tictactoe/core/themes/theme.dart';
 
-class Board extends ConsumerWidget {
+class Board extends StatelessWidget {
   const Board({
     super.key,
     required this.gradientColors,
@@ -18,8 +18,7 @@ class Board extends ConsumerWidget {
   final List<List<int>> gameState;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(gameProvider);
+  Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final boardDimensions = min(height, width);
@@ -66,23 +65,47 @@ class Board extends ConsumerWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             padding: const EdgeInsets.all(4),
-            child: GestureDetector(
-              onTap: () {
-                final isMyTurn = ref.read(gameProvider).isMyTurn;
-                ref.read(gameProvider.notifier).set(x, y, isMyTurn ? 0 : 1);
-                ref.read(gameProvider.notifier).toggle();
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppTheme.scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                alignment: Alignment.center,
-                child: value == -1 ? null : Text(value == 0 ? 'X' : 'O'),
-              ),
+            child: Cell(
+              x: x,
+              y: y,
+              value: value,
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class Cell extends ConsumerWidget {
+  const Cell({
+    super.key,
+    required this.x,
+    required this.y,
+    required this.value,
+  });
+
+  final int x;
+  final int y;
+  final int value;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(gameProvider.select((value) => value.gameState[x][y]));
+    return GestureDetector(
+      onTap: () {
+        if (ref.read(gameProvider).gameState[x][y] != -1) return;
+        final isMyTurn = ref.read(gameProvider).isMyTurn;
+        ref.read(gameProvider.notifier).set(x, y, isMyTurn ? 0 : 1);
+        ref.read(gameProvider.notifier).toggle();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        alignment: Alignment.center,
+        child: value == -1 ? null : Text(value == 0 ? 'X' : 'O'),
       ),
     );
   }
