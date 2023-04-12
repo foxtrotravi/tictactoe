@@ -11,12 +11,14 @@ class Board extends StatelessWidget {
     super.key,
     required this.gradientColors,
     required this.gameState,
+    this.isAi = false,
     this.dimension,
   });
 
   final List<Color> gradientColors;
   final double? dimension;
   final List<List<int>> gameState;
+  final bool isAi;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +72,7 @@ class Board extends StatelessWidget {
               x: x,
               y: y,
               value: value,
+              isAi: isAi,
             ),
           );
         },
@@ -84,11 +87,13 @@ class Cell extends ConsumerWidget {
     required this.x,
     required this.y,
     required this.value,
+    required this.isAi,
   });
 
   final int x;
   final int y;
   final int value;
+  final bool isAi;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -100,12 +105,14 @@ class Cell extends ConsumerWidget {
         final isMyTurn = game.isMyTurn;
         final gameNotifierProvider = ref.read(gameProvider.notifier);
         gameNotifierProvider.set(x, y, isMyTurn ? 0 : 1);
-        await Future.delayed(
-          const Duration(milliseconds: 250),
-        );
-        game = ref.read(gameProvider);
-        if (!isGameOver(game.gameState)) {
-          gameNotifierProvider.aiMove();
+        if (isAi) {
+          await Future.delayed(
+            const Duration(milliseconds: 250),
+          );
+          game = ref.read(gameProvider);
+          if (!isGameOver(game.gameState)) {
+            gameNotifierProvider.aiMove();
+          }
         }
       },
       child: Container(

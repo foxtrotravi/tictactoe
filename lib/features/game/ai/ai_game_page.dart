@@ -28,6 +28,7 @@ class AIGamePage extends ConsumerWidget {
                 },
               );
               return Board(
+                isAi: true,
                 gameState: ref.watch(gameProvider).gameState,
                 gradientColors: const [
                   Colors.indigo,
