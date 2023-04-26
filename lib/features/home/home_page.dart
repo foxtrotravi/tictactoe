@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:random_text_reveal/random_text_reveal.dart';
 import 'package:tictactoe/core/providers/index.dart';
 import 'package:tictactoe/core/routing/routes.dart';
 import 'package:tictactoe/features/game/widgets/board.dart';
@@ -24,10 +25,29 @@ class HomePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'Tic Tac Toe',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    'Tic Tac ',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  RandomTextReveal(
+                    text: 'Toe',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    duration: Duration(
+                      seconds: 1,
+                      milliseconds: 250,
+                    ),
+                    randomString: 'xo',
+                  ),
+                ],
               ),
               Container(
                 alignment: Alignment.center,
