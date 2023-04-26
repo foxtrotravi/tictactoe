@@ -13,6 +13,17 @@ class GameState {
     required this.isMyTurn,
   });
 
+  factory GameState.initial() {
+    return const GameState(
+      gameState: [
+        [Player.none, Player.none, Player.none],
+        [Player.none, Player.none, Player.none],
+        [Player.none, Player.none, Player.none],
+      ],
+      isMyTurn: true,
+    );
+  }
+
   GameState updateGameState(int x, int y, Player player) {
     final list = [
       [Player.none, Player.none, Player.none],
@@ -52,17 +63,7 @@ class GameState {
 }
 
 class GameStateNotifier extends StateNotifier<GameState> {
-  GameStateNotifier()
-      : super(
-          const GameState(
-            gameState: [
-              [Player.none, Player.none, Player.none],
-              [Player.none, Player.none, Player.none],
-              [Player.none, Player.none, Player.none],
-            ],
-            isMyTurn: true,
-          ),
-        );
+  GameStateNotifier() : super(GameState.initial());
 
   void set(int x, int y, Player player) {
     state = state.updateGameState(x, y, player);
