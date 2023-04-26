@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tictactoe/core/enums/enums.dart';
 import 'package:tictactoe/core/providers/index.dart';
 import 'package:tictactoe/core/themes/theme.dart';
 import 'package:tictactoe/core/utils/utils.dart';
@@ -17,7 +18,7 @@ class Board extends StatelessWidget {
 
   final List<Color> gradientColors;
   final double? dimension;
-  final List<List<int>> gameState;
+  final List<List<Player>> gameState;
   final bool isAi;
 
   @override
@@ -92,7 +93,7 @@ class Cell extends ConsumerWidget {
 
   final int x;
   final int y;
-  final int value;
+  final Player value;
   final bool isAi;
 
   @override
@@ -101,16 +102,22 @@ class Cell extends ConsumerWidget {
     return GestureDetector(
       onTap: () async {
         var game = ref.read(gameProvider);
-        if (game.gameState[x][y] != -1 || isGameOver(game.gameState)) return;
+        if (game.gameState[x][y] != Player.none ||
+            gameWinner(game.gameState) != GameWinner.none) {
+          debugPrint('Returning');
+          debugPrint(
+              'gameWinner(game.gameState) != GameWinner.none: ${gameWinner(game.gameState)}');
+          return;
+        }
         final isMyTurn = game.isMyTurn;
         final gameNotifierProvider = ref.read(gameProvider.notifier);
-        gameNotifierProvider.set(x, y, isMyTurn ? 0 : 1);
+        gameNotifierProvider.set(x, y, isMyTurn ? Player.x : Player.o);
         if (isAi) {
           await Future.delayed(
             const Duration(milliseconds: 250),
           );
           game = ref.read(gameProvider);
-          if (!isGameOver(game.gameState)) {
+          if (gameWinner(game.gameState) == GameWinner.none && isAi) {
             gameNotifierProvider.aiMove();
           }
         }
@@ -121,7 +128,11 @@ class Cell extends ConsumerWidget {
           borderRadius: BorderRadius.circular(4),
         ),
         alignment: Alignment.center,
-        child: value == -1 ? null : Text(value == 0 ? 'X' : 'O'),
+        child: value == Player.none
+            ? null
+            : Text(
+                value == Player.x ? 'X' : 'O',
+              ),
       ),
     );
   }

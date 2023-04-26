@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tictactoe/core/enums/enums.dart';
 import 'package:tictactoe/core/utils/utils.dart';
 
 @immutable
 class GameState {
-  final List<List<int>> gameState;
+  final List<List<Player>> gameState;
   final bool isMyTurn;
 
   const GameState({
@@ -12,11 +13,11 @@ class GameState {
     required this.isMyTurn,
   });
 
-  GameState updateGameState(int x, int y, int value) {
+  GameState updateGameState(int x, int y, Player player) {
     final list = [
-      [-1, -1, -1],
-      [-1, -1, -1],
-      [-1, -1, -1],
+      [Player.none, Player.none, Player.none],
+      [Player.none, Player.none, Player.none],
+      [Player.none, Player.none, Player.none],
     ];
 
     for (var i = 0; i < 3; i++) {
@@ -24,7 +25,7 @@ class GameState {
         if (i != x || j != y) {
           list[i][j] = gameState[i][j];
         } else {
-          list[i][j] = value;
+          list[i][j] = player;
         }
       }
     }
@@ -35,7 +36,7 @@ class GameState {
   }
 
   GameState copyWith({
-    List<List<int>>? gameState,
+    List<List<Player>>? gameState,
     bool? isMyTurn,
   }) {
     return GameState(
@@ -55,16 +56,16 @@ class GameStateNotifier extends StateNotifier<GameState> {
       : super(
           const GameState(
             gameState: [
-              [-1, -1, -1],
-              [-1, -1, -1],
-              [-1, -1, -1],
+              [Player.none, Player.none, Player.none],
+              [Player.none, Player.none, Player.none],
+              [Player.none, Player.none, Player.none],
             ],
             isMyTurn: true,
           ),
         );
 
-  void set(int x, int y, int value) {
-    state = state.updateGameState(x, y, value);
+  void set(int x, int y, Player player) {
+    state = state.updateGameState(x, y, player);
     toggle();
   }
 
@@ -73,7 +74,7 @@ class GameStateNotifier extends StateNotifier<GameState> {
   }
 
   void aiMove() {
-    final bestMove = nextMove(state.gameState, 1);
+    final bestMove = nextMove(state.gameState, Player.o);
     state = state.copyWith(
       gameState: bestMove,
       isMyTurn: true,
