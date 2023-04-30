@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tictactoe/core/enums/enums.dart';
 import 'package:tictactoe/core/providers/index.dart';
 import 'package:tictactoe/core/utils/utils.dart';
+import 'package:tictactoe/core/widgets/game_button.dart';
 import 'package:tictactoe/features/game/widgets/board.dart';
 
 class AIGamePage extends ConsumerStatefulWidget {
@@ -42,7 +44,7 @@ class _AIGamePageState extends ConsumerState<AIGamePage> {
             ),
             const SizedBox(height: 20),
             Center(
-              child: ElevatedButton(
+              child: GameButton(
                 onPressed: () {
                   final _ = ref.refresh(gameProvider);
                   isGameOver = false;
