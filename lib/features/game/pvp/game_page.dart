@@ -16,6 +16,12 @@ class _GamePageState extends ConsumerState<GamePage> {
   bool isGameOver = false;
 
   @override
+  void initState() {
+    super.initState();
+    final _ = ref.refresh(gameProvider);
+  }
+
+  @override
   Widget build(BuildContext context) {
     ref.listen(
       gameProvider,

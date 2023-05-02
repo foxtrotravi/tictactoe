@@ -54,12 +54,18 @@ class _GameButtonState extends State<GameButton> {
       child: AnimatedContainer(
         padding: widget.padding,
         duration: const Duration(milliseconds: 100),
-        color: color,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8),
+        ),
         height: height,
         width: width,
         alignment: widget.alignment,
         child: Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(4),
+          ),
           alignment: Alignment.center,
           child: widget.child,
         ),

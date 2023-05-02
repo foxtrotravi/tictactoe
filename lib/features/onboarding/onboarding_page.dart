@@ -31,5 +31,7 @@ class OnboardingPage extends ConsumerWidget {
   Future<void> onPressed(BuildContext context, WidgetRef ref) async {
     context.goNamed(Routes.home);
     await ref.read(sharedPreferencesProvider).value!.setBool(kIsNewUser, false);
+    // Set default coins
+    await ref.read(sharedPreferencesProvider).value!.setInt(kCoins, 250);
   }
 }
