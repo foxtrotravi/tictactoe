@@ -9,10 +9,29 @@ class AppTheme {
     primaryColor: primary,
     scaffoldBackgroundColor: scaffoldBackgroundColor,
     fontFamily: GoogleFonts.orbitron().fontFamily,
+    iconTheme: const IconThemeData(
+      color: Colors.white,
+    ),
     textTheme: const TextTheme(
+      bodySmall: TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+      ),
       bodyMedium: TextStyle(
         color: Colors.white,
+        fontSize: 20,
+      ),
+      bodyLarge: TextStyle(
+        color: Colors.white,
+        fontSize: 24,
       ),
     ),
   );
 }
+
+const gradients = [
+  [Colors.blue, Colors.indigo],
+  [Colors.pink, Colors.red],
+  [Colors.yellow, Colors.orange],
+  [Colors.green, Colors.lime],
+];

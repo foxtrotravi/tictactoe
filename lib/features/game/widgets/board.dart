@@ -58,7 +58,8 @@ class Board extends StatelessWidget {
           final y = indexMap[index]![1];
           final value = gameState[x][y];
 
-          return Container(
+          return AnimatedContainer(
+            duration: const Duration(seconds: 1),
             decoration: BoxDecoration(
               color: AppTheme.scaffoldBackgroundColor,
               gradient: LinearGradient(

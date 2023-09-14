@@ -4,23 +4,71 @@ import 'package:go_router/go_router.dart';
 import 'package:tictactoe/core/constants/constants.dart';
 import 'package:tictactoe/core/providers/index.dart';
 import 'package:tictactoe/core/routing/routes.dart';
+import 'package:tictactoe/core/themes/theme.dart';
+import 'package:tictactoe/features/onboarding/pages/index.dart';
 
-class OnboardingPage extends ConsumerWidget {
+class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OnboardingPage> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends ConsumerState<OnboardingPage> {
+  int index = 0;
+  int currentPage = 0;
+  final pageController = PageController();
+
+  @override
+  void initState() {
+    animateBoard();
+    super.initState();
+  }
+
+  Future<void> animateBoard() async {
+    for (int i = 0; i < 10; i++) {
+      await Future.delayed(const Duration(seconds: 1));
+      index = (index + 1) % gradients.length;
+      if (mounted) {
+        setState(() {});
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              alignment: Alignment.center,
-              child: const Text('Onboarding'),
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                children: [
+                  FirstOnboardingPage(index: index),
+                  const SecondOnboardingPage(),
+                  const ThirdOnboardingPage(),
+                ],
+              ),
             ),
-            ElevatedButton(
-              onPressed: () => onPressed(context, ref),
-              child: const Text('Home page'),
+            Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 20),
+              child: ElevatedButton(
+                child: const Text('Next'),
+                onPressed: () {
+                  pageController.nextPage(
+                    duration: const Duration(
+                      milliseconds: 250,
+                    ),
+                    curve: Curves.easeIn,
+                  );
+
+                  if (pageController.page == 2) {
+                    context.go(Routes.home);
+                  }
+                },
+              ),
             ),
           ],
         ),
