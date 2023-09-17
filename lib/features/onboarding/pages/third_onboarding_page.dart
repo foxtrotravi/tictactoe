@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tictactoe/core/widgets/coins.dart';
 
 class ThirdOnboardingPage extends StatelessWidget {
   const ThirdOnboardingPage({
@@ -10,9 +11,16 @@ class ThirdOnboardingPage extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(20),
-      child: const Text(
-        'Here are 250 coins for getting started',
-        textAlign: TextAlign.center,
+      child: const Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Coin(),
+          SizedBox(height: 20),
+          Text(
+            'Here are 250 coins for getting started',
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

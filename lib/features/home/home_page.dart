@@ -88,7 +88,7 @@ class HomePage extends StatelessWidget {
                       child: Column(
                         children: [
                           GameButton(
-                            onPressed: () {
+                            onPressed: () async {
                               context.pushNamed(Routes.aiGame);
                             },
                             child: const Text('vs AI'),

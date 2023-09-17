@@ -13,7 +13,10 @@ class CoinsWidget extends ConsumerWidget {
       children: [
         const Coin(),
         const SizedBox(width: 8),
-        Text(ref.watch(coinsProvider).toString())
+        Text(
+          ref.watch(coinsProvider).toString(),
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
       ],
     );
   }
