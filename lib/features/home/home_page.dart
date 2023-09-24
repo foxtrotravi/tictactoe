@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:feather_icons/feather_icons.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:random_text_reveal/random_text_reveal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tictactoe/core/providers/board/board_provider.dart';
+import 'package:tictactoe/core/providers/coins/coins_provider.dart';
 import 'package:tictactoe/core/providers/index.dart';
 import 'package:tictactoe/core/routing/routes.dart';
 import 'package:tictactoe/core/widgets/coins.dart';
@@ -24,6 +24,8 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   late Color color;
   int currentPage = 0;
+  late SharedPreferences sharedPreferences;
+  int shopBoardIndex = 0;
 
   @override
   void initState() {
@@ -37,8 +39,14 @@ class _HomePageState extends ConsumerState<HomePage> {
     final height = MediaQuery.of(context).size.height;
     final dimension = min(width, height);
 
-    final boards =
-        ref.watch(boardsProvider).where((board) => !board.isLocked).toList();
+    final boards = ref
+        .watch(boardsProvider)
+        .where((board) => !board.isLocked)
+        .toList()
+        .reversed
+        .toList();
+
+    calculateBoard(ref);
 
     return Scaffold(
       body: SafeArea(
@@ -175,7 +183,10 @@ class _HomePageState extends ConsumerState<HomePage> {
         children: [
           IconButton(
             onPressed: () {
-              context.pushNamed(Routes.shop);
+              context.pushNamed(
+                Routes.shop,
+                params: {'shopBoardIndex': '$shopBoardIndex'},
+              );
             },
             icon: const Icon(FeatherIcons.shoppingCart),
           ),
@@ -184,5 +195,18 @@ class _HomePageState extends ConsumerState<HomePage> {
         ],
       ),
     );
+  }
+
+  void calculateBoard(WidgetRef ref) {
+    final boards = ref.watch(boardsProvider);
+
+    for (int i = 0; i < boards.length; i++) {
+      if (boards[i].isLocked) {
+        shopBoardIndex = i;
+        break;
+      }
+    }
+
+    setState(() {});
   }
 }

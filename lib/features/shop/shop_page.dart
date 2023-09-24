@@ -14,16 +14,18 @@ import 'package:tictactoe/core/widgets/game_button.dart';
 import 'package:tictactoe/features/game/widgets/board.dart';
 
 class ShopPage extends ConsumerStatefulWidget {
-  const ShopPage({super.key});
+  const ShopPage({
+    super.key,
+    required this.boardIndex,
+  });
+  final int boardIndex;
 
   @override
   ConsumerState<ShopPage> createState() => _ShopPageState();
 }
 
 class _ShopPageState extends ConsumerState<ShopPage> {
-  final _pageController = PageController(
-    initialPage: 0,
-  );
+  late final PageController _pageController;
 
   late SharedPreferences sharedPreferences;
   late ConfettiController _confettiController;
@@ -34,6 +36,8 @@ class _ShopPageState extends ConsumerState<ShopPage> {
     _confettiController = ConfettiController(
       duration: const Duration(milliseconds: 500),
     );
+
+    _pageController = PageController(initialPage: widget.boardIndex);
   }
 
   @override

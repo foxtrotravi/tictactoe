@@ -38,9 +38,11 @@ final routerConfig = GoRouter(
       ),
     ),
     GoRoute(
-      path: Routes.shop,
+      path: '${Routes.shop}/:shopBoardIndex',
       name: Routes.shop,
-      builder: (context, state) => const ShopPage(),
+      builder: (context, state) => ShopPage(
+        boardIndex: int.parse(state.params['shopBoardIndex'] ?? '0'),
+      ),
     ),
   ],
 );

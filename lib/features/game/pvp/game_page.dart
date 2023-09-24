@@ -44,8 +44,12 @@ class _GamePageState extends ConsumerState<GamePage> {
   @override
   Widget build(BuildContext context) {
     sharedPreferences = ref.watch(sharedPreferencesProvider).value!;
-    final boards =
-        ref.watch(boardsProvider).where((board) => !board.isLocked).toList();
+    final boards = ref
+        .watch(boardsProvider)
+        .where((board) => !board.isLocked)
+        .toList()
+        .reversed
+        .toList();
 
     ref.listen(
       gameProvider,

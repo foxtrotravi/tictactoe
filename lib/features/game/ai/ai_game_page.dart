@@ -45,7 +45,9 @@ class _AIGamePageState extends ConsumerState<AIGamePage> {
   Widget build(BuildContext context) {
     sharedPreferences = ref.watch(sharedPreferencesProvider).value!;
     final boards =
-        ref.watch(boardsProvider).where((board) => !board.isLocked).toList();
+        ref.watch(boardsProvider).where((board) => !board.isLocked).toList()
+        .reversed
+        .toList();
 
     return Scaffold(
       body: SafeArea(
