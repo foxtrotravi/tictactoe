@@ -99,7 +99,7 @@ List<List<Player>> nextMove(List<List<Player>> currentState, Player player) {
   GameWinner winner = gameWinner(currentState);
   if (winner != GameWinner.none) return currentState;
 
-  int bestScore = -1 << 12;
+  int bestScore = -100;
   var bestMove = <int>[];
   for (var i = 0; i < 3; i++) {
     for (var j = 0; j < 3; j++) {

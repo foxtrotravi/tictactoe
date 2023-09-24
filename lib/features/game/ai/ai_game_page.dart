@@ -3,20 +3,25 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tictactoe/core/constants/constants.dart';
 import 'package:tictactoe/core/enums/enums.dart';
 import 'package:tictactoe/core/keys/keys.dart';
+import 'package:tictactoe/core/providers/board/board_provider.dart';
 import 'package:tictactoe/core/providers/coins/coins_provider.dart';
 import 'package:tictactoe/core/providers/index.dart';
 import 'package:tictactoe/core/utils/utils.dart';
 import 'package:tictactoe/core/widgets/coins.dart';
+import 'package:tictactoe/core/widgets/custom_app_bar.dart';
 import 'package:tictactoe/core/widgets/game_button.dart';
 import 'package:tictactoe/features/game/widgets/board.dart';
 
 class AIGamePage extends ConsumerStatefulWidget {
-  const AIGamePage({super.key});
+  const AIGamePage({
+    super.key,
+    required this.boardId,
+  });
+  final int boardId;
 
   @override
   ConsumerState<AIGamePage> createState() => _AIGamePageState();
@@ -39,32 +44,14 @@ class _AIGamePageState extends ConsumerState<AIGamePage> {
   @override
   Widget build(BuildContext context) {
     sharedPreferences = ref.watch(sharedPreferencesProvider).value!;
+    final boards =
+        ref.watch(boardsProvider).where((board) => !board.isLocked).toList();
 
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            Positioned(
-              left: 20,
-              right: 20,
-              top: 10,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      size: 15,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      context.pop();
-                    },
-                  ),
-                  CoinsWidget(key: toCoinKey),
-                ],
-              ),
-            ),
+            const CustomAppbar(),
             Positioned(
               right: 20,
               bottom: 10,
@@ -102,9 +89,12 @@ class _AIGamePageState extends ConsumerState<AIGamePage> {
                                   // increase coins
                                   var coins =
                                       sharedPreferences.getInt(kCoins) ?? 0;
-                                  coins += 100;
+                                  final cashback =
+                                      boards[widget.boardId].cashback;
+                                  coins += cashback;
                                   await sharedPreferences.setInt(kCoins, coins);
-                                  ref.read(coinsProvider.notifier).state += 100;
+                                  ref.read(coinsProvider.notifier).state +=
+                                      cashback;
                                   initCoinsPath();
                                   playCoinAnimation();
                                   setState(() {});
@@ -130,16 +120,14 @@ class _AIGamePageState extends ConsumerState<AIGamePage> {
                     return Board(
                       isAi: true,
                       gameState: ref.watch(gameProvider).gameState,
-                      gradientColors: const [
-                        Colors.indigo,
-                        Colors.blue,
-                      ],
+                      gradientColors: boards[widget.boardId].gradientColors,
                     );
                   },
                 ),
                 const SizedBox(height: 20),
                 Center(
                   child: GameButton(
+                    color: boards[widget.boardId].gradientColors.first,
                     onPressed: () {
                       final _ = ref.refresh(gameProvider);
                       isGameOver = false;

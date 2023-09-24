@@ -7,12 +7,14 @@ class GameButton extends StatefulWidget {
     this.padding = const EdgeInsets.all(4),
     this.alignment = Alignment.center,
     required this.onPressed,
+    this.color = Colors.blue,
   });
 
   final Widget child;
   final EdgeInsets padding;
   final AlignmentGeometry alignment;
   final VoidCallback onPressed;
+  final Color color;
 
   @override
   State<GameButton> createState() => _GameButtonState();
@@ -21,7 +23,6 @@ class GameButton extends StatefulWidget {
 class _GameButtonState extends State<GameButton> {
   double height = 50;
   double width = 300;
-  Color color = Colors.blue;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,7 @@ class _GameButtonState extends State<GameButton> {
         padding: widget.padding,
         duration: const Duration(milliseconds: 100),
         decoration: BoxDecoration(
-          color: color,
+          color: widget.color,
           borderRadius: BorderRadius.circular(8),
         ),
         height: height,
@@ -76,14 +77,12 @@ class _GameButtonState extends State<GameButton> {
   void buttonPressed() {
     height = 45;
     width = 280;
-    color = Colors.blueAccent;
     setState(() {});
   }
 
   void buttonReleased() {
     height = 50;
     width = 300;
-    color = Colors.blue;
     setState(() {});
   }
 }

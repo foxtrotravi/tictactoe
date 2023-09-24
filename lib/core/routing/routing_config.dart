@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tictactoe/core/errors/error_page.dart';
 import 'package:tictactoe/core/routing/routes.dart';
 import 'package:tictactoe/features/index.dart';
+import 'package:tictactoe/features/shop/shop_page.dart';
 
 final routerConfig = GoRouter(
   initialLocation: Routes.splash,
@@ -23,14 +24,23 @@ final routerConfig = GoRouter(
       builder: (context, state) => const HomePage(),
     ),
     GoRoute(
-      path: Routes.game,
+      path: '${Routes.game}/:boardId',
       name: Routes.game,
-      builder: (context, state) => const GamePage(),
+      builder: (context, state) => GamePage(
+        boardId: int.parse(state.params['boardId'] ?? '0'),
+      ),
     ),
     GoRoute(
-      path: Routes.aiGame,
+      path: '${Routes.aiGame}/:boardId',
       name: Routes.aiGame,
-      builder: (context, state) => const AIGamePage(),
+      builder: (context, state) => AIGamePage(
+        boardId: int.parse(state.params['boardId'] ?? '0'),
+      ),
+    ),
+    GoRoute(
+      path: Routes.shop,
+      name: Routes.shop,
+      builder: (context, state) => const ShopPage(),
     ),
   ],
 );

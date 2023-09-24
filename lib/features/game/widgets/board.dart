@@ -10,16 +10,44 @@ import 'package:tictactoe/core/utils/utils.dart';
 class Board extends StatelessWidget {
   const Board({
     super.key,
+    this.id = -1,
     required this.gradientColors,
     required this.gameState,
     this.isAi = false,
     this.dimension,
+    this.cost = 0,
+    this.cashback = 0,
+    this.isLocked = true,
   });
 
   final List<Color> gradientColors;
   final double? dimension;
   final List<List<Player>> gameState;
   final bool isAi;
+  final int cost;
+  final int cashback;
+  final int id;
+  final bool isLocked;
+
+  Board copyWith({
+    List<Color>? gradientColors,
+    double? dimension,
+    List<List<Player>>? gameState,
+    bool? isAi,
+    int? cost,
+    int? cashback,
+    bool? isLocked,
+  }) {
+    return Board(
+      gradientColors: gradientColors ?? this.gradientColors,
+      gameState: gameState ?? this.gameState,
+      cashback: cashback ?? this.cashback,
+      cost: cost ?? this.cost,
+      dimension: dimension ?? this.dimension,
+      isAi: isAi ?? this.isAi,
+      isLocked: isLocked ?? this.isLocked,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
