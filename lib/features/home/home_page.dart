@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:random_text_reveal/random_text_reveal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tictactoe/core/providers/board/board_provider.dart';
-import 'package:tictactoe/core/providers/coins/coins_provider.dart';
 import 'package:tictactoe/core/providers/index.dart';
 import 'package:tictactoe/core/routing/routes.dart';
 import 'package:tictactoe/core/widgets/coins.dart';
