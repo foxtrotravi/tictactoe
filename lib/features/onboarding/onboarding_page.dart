@@ -70,11 +70,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   );
 
                   if (pageController.page == 2) {
-                    // await sharedPreferences.setInt(kCoins, 0);
-                    // ref.read(coinsProvider.notifier).state += 250;
-                    // if (mounted) {
-                    //   context.go(Routes.home);
-                    // }
                     onPressed(context, ref);
                   }
                 },
@@ -87,10 +82,12 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   Future<void> onPressed(BuildContext context, WidgetRef ref) async {
-    context.goNamed(Routes.home);
     await sharedPreferences.setBool(kIsNewUser, false);
     // Set default coins
     await sharedPreferences.setInt(kCoins, 250);
-    ref.read(coinsProvider.notifier).state += 250;
+    ref.read(coinsProvider.notifier).state = 250;
+    if (mounted) {
+      context.goNamed(Routes.home);
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tictactoe/core/constants/constants.dart';
 import 'package:tictactoe/core/providers/index.dart';
@@ -26,7 +27,15 @@ class SplashPage extends ConsumerWidget {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        child: const Icon(Icons.home),
+        child: SpinKitFoldingCube(
+          itemBuilder: (BuildContext context, int index) {
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                color: index.isEven ? Colors.blue : Colors.indigo,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
